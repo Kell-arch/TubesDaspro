@@ -200,6 +200,7 @@ int main() {
 
     do {
         menu();
+		printf("Pilih Menu : ");
         scanf("%d", &pilih);
         system("cls");
         switch (pilih) {
