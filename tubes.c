@@ -232,7 +232,7 @@ void editPemain() {  // No(06)
     scanf("%d", &nomor);
 
     idx = cariTimByNomor(nomor);
-    if (idx < 1 && idx > 10) {
+    if (idx < 1 && idx > MAX_TIM) {
         printf("\nTim Tidak Ditemukan.\n");
     } else if (tim[idx].jumlahPemain == 0) {
         printf("Tim %s belum memiliki pemain.\n", tim[idx].namaTim);
