@@ -336,12 +336,6 @@ void tampilPemainTim(){ //No(08)
     getch();
 }
 
-
-void tampilGanjil(){ //No(09)
-	
-}
-
-
 void menu() {
     printf("====================================\n");
     printf("    PENDATAAN SEPAK TAKRAW D.I.Y\n");
@@ -414,14 +408,8 @@ int main() {
 				break;
 			}
 			
-			case 8: {
+			case 8:{
 				tampilPemainTim();
-				system("cls");
-				break;
-			}
-			
-			case 9: {
-				tampilGanjil();
 				system("cls");
 				break;
 			}
