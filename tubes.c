@@ -22,7 +22,9 @@ typedef struct {
 } Tim;
 
 Tim tim[MAX_TIM];
+Pemain pemain[MAX_PEMAIN];
 int jumlahTim = 0;
+int jumlahPemain = 0;
 int juara1 = -1, juara2 = -1, juara3 = -1;
 int nextNomor = 1;
 
@@ -31,8 +33,8 @@ int cariTimByNomor(int nomor) {
     for (i = 0; i < jumlahTim; i++) {
         if (tim[i].nomor == nomor)
             return i;
-    }
-    return -1;
+	}
+	return -1;
 }
 
 int cariTimByNama(string nama) {
@@ -44,7 +46,7 @@ int cariTimByNama(string nama) {
     return -1;
 }
 
-void entriTim() {
+void entriTim() {  //No(01)
     system("cls");
     if (jumlahTim >= MAX_TIM) {
         printf("Maaf, maksimum tim sudah tercapai.\n");
@@ -76,7 +78,7 @@ void entriTim() {
     }
 }
 
-void editTim() {
+void editTim() {  //No(02)
     int nomor, idx;
     system("cls");
     if (jumlahTim == 0) {
@@ -116,7 +118,7 @@ void editTim() {
     }
 }
 
-void tampilSemuaTim() {
+void tampilSemuaTim() { //No(03)
     int i;
     system("cls");
     printf("========================================\n");
@@ -136,7 +138,7 @@ void tampilSemuaTim() {
     getch();
 }
 
-void hapusTim() {
+void hapusTim() {  //No(04)
     int nomor, idx, i;
     char konfirmasi;
     system("cls");
@@ -174,6 +176,172 @@ void hapusTim() {
     }
 }
 
+void entriPemain() { //No(05)
+    int nomor, idx;
+    char konfirmasi;
+    
+    system("cls");
+    if (jumlahTim == 0) {
+        printf("Belum ada tim terdaftar. Daftarkan tim terlebih dahulu.\n");
+    } else {
+        printf("=================================\n");
+        printf("       ENTRI NAMA PEMAIN\n");
+        printf("=================================\n");
+        printf("Masukkan nomor tim: ");scanf("%d", &nomor);
+
+        idx = cariTimByNomor(nomor);
+        if (idx == -1) {
+            printf("Tim dengan nomor %d tidak ditemukan.\n", nomor);
+        } else {
+            do {
+                if (tim[idx].jumlahPemain >= MAX_PEMAIN) {
+                    printf("\n[!] Maaf, jumlah pemain untuk tim %s sudah penuh (Maks %d). [!]\n", tim[idx].namaTim, MAX_PEMAIN);
+                    break;
+                }
+
+                int idxPemain = tim[idx].jumlahPemain;
+                printf("\nNama pemain ke-%d: ", idxPemain + 1);fflush(stdin);gets(tim[idx].pemain[idxPemain].nama);
+
+                tim[idx].jumlahPemain++;
+                printf("Pemain berhasil ditambahkan!");
+
+                if (tim[idx].jumlahPemain >= MAX_PEMAIN) {
+                    printf("[!] Kuota pemain sudah terpenuhi (3/3). [!]\n");
+                    break; 
+                }
+
+                printf("\nLanjut: ingin tambah pemain lagi? (Y/N): ");fflush(stdin);scanf("%c", &konfirmasi);
+
+            } while (konfirmasi == 'y' || konfirmasi == 'Y');
+            printf("\nPengisian pemain untuk tim %s selesai.\n", tim[idx].namaTim);
+        }
+    }
+    printf("Tekan enter untuk kembali...");
+    getch();
+}
+
+
+void editPemain(){ //No(06)
+	int i, idx, nomor, noPemain;
+	char konfirmasi;
+	system("cls");
+	printf("=================================\n");
+	printf("       ENTRI NAMA PEMAIN\n");
+	printf("=================================\n");
+	printf("\nMasukkan nomor Tim: ");scanf("%d", &nomor);
+	
+	idx = cariTimByNomor(nomor);
+	if(idx == -1){
+		printf("\nTim Tidak Ditemukan.\n");
+	}else if(tim[idx].jumlahPemain == 0){
+		printf("Tim %s belum memiliki pemain.\n", tim[idx].namaTim);
+	}else{
+		do{
+			printf("\nDaftar Pemain Tim %s:\n", tim[idx].namaTim);
+			for(i = 0; i < tim[idx].jumlahPemain; i++){
+				printf("%d, %s\n", i+1, tim[idx].pemain[i].nama);
+			}
+		
+			printf("Pilih Nomor Pemain yang Ingin DIedit (1-%d): ", tim[idx].jumlahPemain);
+			
+			if(scanf("%d", &noPemain) != 1){
+				printf("[!] Error, Inputan bukan Nomor [!]");
+			}
+		
+			if(noPemain < 1 || noPemain > tim[idx].jumlahPemain){
+				printf("Nomor Pemain tidak Valid\n");
+			}else{
+				printf("Masukkan Nama Baru: ");fflush(stdin);gets(tim[idx].pemain[noPemain - 1].nama);
+				printf("Ingin edit Nama Pemain Lainnya? [Y/N]: ");fflush(stdin);scanf("%c", &konfirmasi);
+			}
+		}while(konfirmasi == 'y' || konfirmasi == 'Y');
+        printf("\nPengeditan pemain untuk tim %s selesai.\n", tim[idx].namaTim);
+	}
+    printf("Tekan enter untuk kembali...");
+	getch();
+}
+
+void hapusPemain(){ //No(07)
+	int i, idx, nomor, noPemain;
+	char konfirmasi;
+	system("cls");
+	printf("=================================\n");
+	printf("       HAPUS NAMA PEMAIN\n");
+	printf("=================================\n");
+	printf("\nMasukkan nomor Tim: ");scanf("%d", &nomor);
+	
+	idx = cariTimByNomor(nomor);
+	if(idx == -1){
+		printf("\nTim Tidak Ditemukan.\n");
+	}else if(tim[idx].jumlahPemain == 0){
+		printf("Tim %s belum memiliki pemain.\n", tim[idx].namaTim);
+	}else{
+		do{
+			printf("\nDaftar Pemain Tim %s:\n", tim[idx].namaTim);
+			for(i = 0; i < tim[idx].jumlahPemain; i++){
+				printf("%d, %s\n", i+1, tim[idx].pemain[i].nama);
+			}
+			
+			printf("Pilih Nomor Pemain yang Ingin Dihapus (1-%d): ", tim[idx].jumlahPemain);
+			
+			if(scanf("%d", &noPemain) != 1){
+				printf("[!] Error, Inputan bukan Nomor [!]");
+			}
+		
+			if(noPemain < 1 || noPemain > tim[idx].jumlahPemain){
+				printf("Nomor Pemain tidak Valid\n");
+			}else{
+				for (i = noPemain - 1; i < tim[idx].jumlahPemain; i++){
+					strcpy(tim[idx].pemain[i].nama, tim[idx].pemain[i+1].nama);
+				}
+				tim[idx].jumlahPemain--;
+				printf("\nPemain Berhasil Dihapus.\n");
+				printf("Ingin edit Nama Pemain Lainnya? [Y/N]: ");fflush(stdin);scanf("%c", &konfirmasi);
+			}
+		}while (konfirmasi == 'y' || konfirmasi == 'Y');
+		printf("\nProses Penghapusan untuk tim %s Selesai.\n", tim[idx].namaTim);
+	}
+    printf("Tekan enter untuk kembali...");
+    getch();
+}
+
+
+void tampilPemainTim(){ //No(08)
+    int i, j;
+    system("cls");
+    printf("========================================\n");
+    printf("          SEMUA PEMAIN DAN TIM\n");
+    printf("========================================\n");
+
+    if (jumlahTim == 0) {
+        printf("Belum ada tim terdaftar.\n");
+    } else {
+        for (i = 0; i < jumlahTim; i++) {
+        	printf("\n--TIM [%d]--\n", tim[i].nomor);
+            printf("Nama Tim: %s\n", tim[i].namaTim);
+            printf("Manajer: %s\n", tim[i].manajer);
+            printf("Daftar Pemain:\n");
+            
+            if(tim[i].jumlahPemain == 0){
+            	printf("Belum ada Pemain...\n");
+			}else{
+				for (j = 0; j < tim[i].jumlahPemain; j++){
+					printf("%d, %s\n", j + 1, tim[i].pemain[j].nama);
+				}
+			}
+			printf("----------------------------------------\n");
+        }
+    }
+    printf("Tekan enter untuk kembali...");
+    getch();
+}
+
+
+void tampilGanjil(){ //No(09)
+	
+}
+
+
 void menu() {
     printf("====================================\n");
     printf("    PENDATAAN SEPAK TAKRAW D.I.Y\n");
@@ -186,7 +354,7 @@ void menu() {
     printf("  6. Edit Nama Pemain\n");
     printf("  7. Hapus Nama Pemain\n");
     printf("  8. Tampilkan Semua Pemain dan Tim\n");
-    printf("  9. Tampilkan Pemain pada Tim Tertentu (ganjil) \n");  // ganjil
+    printf("  9. Tampilkan Pemain pada Tim Tertentu (ganjil) \n");
     printf("  10. Entri Juara 1, 2, dan 3\n");
     printf("  11. Edit Juara\n");
     printf("  12. Hapus Juara\n");
@@ -195,38 +363,85 @@ void menu() {
     printf("====================================\n");
 }
 
+//==================================================================================
+
 int main() {
     int pilih;
 
-    do {
+    	system("cls");
         menu();
-		printf("Pilih Menu : ");
         scanf("%d", &pilih);
         system("cls");
         switch (pilih) {
-        case 1: {
-            entriTim();
-            system("cls");
-            break;
-        }
-        case 2: {
-            tampilSemuaTim();
-            system("cls");
-            break;
-        }
+        	case 1: {
+            	entriTim();
+            	system("cls");
+            	break;
+        	}
+        	case 2: {
+        	    tampilSemuaTim();
+        	    system("cls");
+        	    break;
+        	}
 
-        case 3: {
-            editTim();
-            system("cls");
-            break;
-        }
+        	case 3: {
+        	    editTim();
+        	    system("cls");
+        	    break;
+        	}
 
-        case 4: {
-            hapusTim();
-            system("cls");
-            break;
+        	case 4: {
+        	    hapusTim();
+        	    system("cls");
+        	    break;
+        	}
+        	
+        	case 5: {
+        		entriPemain();
+        		system("cls");
+				break;
+			}
+        	
+        	case 6: {
+        		editPemain();
+        		system("cls");
+				break;
+			}
+			
+			case 7: {
+				hapusPemain();
+				system("cls");
+				break;
+			}
+			
+			case 8: {
+				tampilPemainTim();
+				system("cls");
+				break;
+			}
+			
+			case 9: {
+				tampilGanjil();
+				system("cls");
+				break;
+			}
+			
+			case 0:{
+				printf("Program Selesai...\n\n");
+				printf("Anggota Kelompok:\n");
+				printf("Yosef Kelfian P [250713171]\n");
+				printf("Gebriella Wibie N [250713194]\n");
+				printf("Stefanus Kevin Oktaf K [250713192]\n");
+				break;
+			}
+			
+        	default: {
+        		printf("\n\t[!] Menu Tidak Tersedia [!]");
+        		getch();
+				break;
+			}
         }
-        }
-    } while (pilih != 0);
     return 0;
 }
+
+//==================================================================================
