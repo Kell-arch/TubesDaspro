@@ -348,7 +348,7 @@ void menu() {
     printf("  6. Edit Nama Pemain\n");
     printf("  7. Hapus Nama Pemain\n");
     printf("  8. Tampilkan Semua Pemain dan Tim\n");
-    printf("  9. Tampilkan Pemain pada Tim Tertentu (ganjil) \n");  // ganjil
+    printf("  9. Tampilkan Pemain pada Tim Tertentu (ganjil) \n");
     printf("  10. Entri Juara 1, 2, dan 3\n");
     printf("  11. Edit Juara\n");
     printf("  12. Hapus Juara\n");
